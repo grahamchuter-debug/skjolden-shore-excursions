@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ContentPage } from "@/components/content-page";
+import {
+  ExploreNorwegianPorts,
+  explorePortsFromSkjolden,
+} from "@/components/explore-norwegian-ports";
 import { JsonLd } from "@/components/json-ld";
 import { TourCard } from "@/components/tour-card";
 import {
@@ -115,6 +119,10 @@ export default function ExcursionsIndexPage() {
           </p>
         </section>
       </ContentPage>
+      <ExploreNorwegianPorts
+        config={explorePortsFromSkjolden}
+        variant="compact"
+      />
     </>
   );
 }

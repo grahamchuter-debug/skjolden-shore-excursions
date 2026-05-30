@@ -344,3 +344,10 @@ export const explorePortsFromSkjolden: ExploreNorwegianPortsConfig = {
     },
   ],
 };
+
+export const norwegianPortFooterLinks = explorePortsFromSkjolden.cards.map(
+  (card) => ({
+    label: card.title,
+    href: card.titleHref,
+  }),
+);

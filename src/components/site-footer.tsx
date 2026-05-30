@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { norwegianPortFooterLinks } from "@/components/explore-norwegian-ports";
 import { siteConfig } from "@/lib/site-config";
 
 const planYourVisitLinks = [
@@ -191,6 +192,29 @@ export function SiteFooter() {
                 </ul>
               </FooterColumn>
             </div>
+          </div>
+
+          <div className="mt-8 border-t border-white/10 pt-8">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+              Other Norwegian Cruise Ports
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-white/55">
+              Planning more than one port on your sailing? Compare shore
+              excursions, port guides, and Cruise Smart Planners for other
+              Norway cruise destinations.
+            </p>
+            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+              {norwegianPortFooterLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-white/65 transition hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <p className="mt-8 border-t border-white/10 pt-6 text-xs leading-5 text-white/45">
