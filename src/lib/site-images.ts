@@ -1,23 +1,27 @@
-/** Verified Wikimedia Commons URLs and local hero asset. */
+/** Verified Wikimedia Commons URLs (resolved via Commons API) and local hero asset. */
 
 const skjoldenHero = "/images/skjolden-llama-hero.png";
 
 const skjoldenVillage =
-  "https://upload.wikimedia.org/wikipedia/commons/8/8a/Skjolden%2C_Norge.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/3/3a/Skjolden_village.jpg";
 const lustrafjord =
-  "https://upload.wikimedia.org/wikipedia/commons/3/3e/Lustrafjorden.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/5/56/Lustrafjord_%28114939%29.jpg";
+const lustrafjordPanorama =
+  "https://upload.wikimedia.org/wikipedia/commons/a/a5/Panorama_of_Lustrafjord.jpg";
 const sognefjord =
-  "https://upload.wikimedia.org/wikipedia/commons/9/9a/Sognefjorden%2C_Norge.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/1/1e/Sognefjord-Norway-April-2011.jpg";
 const feigumfossen =
-  "https://upload.wikimedia.org/wikipedia/commons/4/4e/Feigumfossen_waterfall_at_Lustrafjord%2C_Norway.jpg";
-const morKridValley =
-  "https://upload.wikimedia.org/wikipedia/commons/f/f4/M%C3%B8rkridsdalen.jpg";
-const mountainScenery =
-  "https://upload.wikimedia.org/wikipedia/commons/6/6c/Jotunheimen_from_Fortun.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/9/9e/Feigumfossen_i_Luster%2C_2017-1.jpg";
+const feigefossen2023 =
+  "https://upload.wikimedia.org/wikipedia/commons/f/fe/Feigefossen_2023_01.jpg";
+const skjoldenViewpoint =
+  "https://upload.wikimedia.org/wikipedia/commons/1/11/View_from_Skjolden_of_Lustrafjorden_with_a_beach_volley_court_at_dusk%2C_Luster%2C_2006.jpg";
+const lustrafjordMountains =
+  "https://upload.wikimedia.org/wikipedia/commons/9/9d/Sogn_og_Fjordane_Lustrafjord_13.JPG";
 const ribBoat =
-  "https://upload.wikimedia.org/wikipedia/commons/5/5a/RIB_boat_in_Norwegian_fjord.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/0/07/Brann-_og_redningstjenestens_RIB_%288784100710%29.jpg";
 const llamaWalk =
-  "https://upload.wikimedia.org/wikipedia/commons/d/d4/Llama_in_Norway.jpg";
+  "https://upload.wikimedia.org/wikipedia/commons/3/39/Lama_med_sau_p%C3%A5_Flygansv%C3%A6r.jpg";
 
 export const siteImages = {
   hero: skjoldenHero,
@@ -25,14 +29,17 @@ export const siteImages = {
   lustrafjord,
   sognefjord,
   feigumfossen,
-  morKridValley,
-  mountainScenery,
+  feigefossen2023,
+  skjoldenViewpoint,
+  morKridValley: skjoldenViewpoint,
+  mountainScenery: lustrafjordPanorama,
+  lustrafjordMountains,
   ribBoat,
   llamaWalk,
   portGuide: skjoldenVillage,
-  worthVisiting: lustrafjord,
+  worthVisiting: lustrafjordPanorama,
   oneDay: sognefjord,
-  bestTime: mountainScenery,
+  bestTime: lustrafjordPanorama,
   llamaTours: llamaWalk,
   sognefjordAdventures: lustrafjord,
   llamaTourCard: skjoldenHero,
@@ -40,7 +47,7 @@ export const siteImages = {
   ribWaterfallHikeTour: feigumfossen,
   villageDiscoveryTour: skjoldenVillage,
   privateSognefjordTour: sognefjord,
-  bikeHikeTour: morKridValley,
+  bikeHikeTour: skjoldenViewpoint,
   flamPortCard:
     "https://upload.wikimedia.org/wikipedia/commons/5/56/Fl%C3%A5m_fr%C3%A5_cruiseskip_ved_kai.jpg",
   bergenPortCard:
@@ -66,7 +73,7 @@ export const siteImages = {
   hellesyltPortCard:
     "https://upload.wikimedia.org/wikipedia/commons/c/c0/Hellesyltfossen_%282%29.jpg",
   trondheimPortCard:
-    "https://upload.wikimedia.org/wikipedia/commons/8/8e/Trondheim_havn_2012.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/f/f2/Puerto%2C_Trondheim%2C_Noruega%2C_2019-09-06%2C_DD_26.jpg",
 } as const;
 
 export const imageAlts = {
@@ -80,13 +87,15 @@ export const imageAlts = {
   feigumfossen:
     "Feigumfossen waterfall cascading into Lustrafjord on Skjolden RIB and hiking tours",
   morKridValley:
-    "Mørkrid Valley river scenery on guided llama walks from Skjolden",
+    "View from Skjolden over Lustrafjord at dusk, Mørkrid Valley region near Skjolden llama walks",
   mountainScenery:
-    "Mountain scenery around Skjolden and the inner Sognefjord region",
+    "Panorama of Lustrafjord with mountain scenery around Skjolden and the inner Sognefjord",
+  lustrafjordMountains:
+    "Steep mountain walls along Lustrafjord near Skjolden on Sognefjord shore excursions",
   ribBoat:
-    "RIB boat speeding across a Norwegian fjord on Skjolden adventure tours",
+    "Norwegian RIB rescue boat on fjord waters, representative of Skjolden RIB adventure tours",
   llamaWalk:
-    "Llama on a guided walk through Norwegian countryside near Skjolden",
+    "Llama with sheep on a Norwegian farm, representative of guided llama walks near Skjolden",
   portGuide:
     "Skjolden village and Lustrafjord waterfront, port guide for cruise passengers",
   worthVisiting:
