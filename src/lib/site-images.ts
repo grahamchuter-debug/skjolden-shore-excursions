@@ -53,7 +53,7 @@ export const siteImages = {
   bergenPortCard:
     "https://upload.wikimedia.org/wikipedia/commons/f/fe/Harbour_Bergen_Norway_2009_5.jpg",
   stavangerPortCard:
-    "https://upload.wikimedia.org/wikipedia/commons/3/3a/Stavanger_havn.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/6/66/Cruise_ship_Stavanger_Norway.jpg",
   alesundPortCard:
     "https://upload.wikimedia.org/wikipedia/commons/c/c7/%C3%85lesund_Hafen_lub_2025-07-28_img04.jpg",
   geirangerPortCard:
