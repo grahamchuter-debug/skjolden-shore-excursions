@@ -90,5 +90,5 @@ export const fjordRibAdventureExcursion: ExcursionData = {
     { label: "Sognefjord adventures guide", href: "/sognefjord-adventures" },
   ],
   bookingHref: "/excursions",
-  bookingLabel: "Book this excursion",
+  bookingLabel: "Explore this excursion",
 };

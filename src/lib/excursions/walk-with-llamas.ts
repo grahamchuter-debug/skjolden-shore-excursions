@@ -85,5 +85,5 @@ export const walkWithLlamasExcursion: ExcursionData = {
     { label: "Llama tours Skjolden guide", href: "/llama-tours-skjolden" },
   ],
   bookingHref: "/excursions",
-  bookingLabel: "Book this excursion",
+  bookingLabel: "Explore this excursion",
 };

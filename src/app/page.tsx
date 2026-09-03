@@ -2,26 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CruisePortDayPlanner } from "@/components/cruise-port-day-planner";
-import {
-  ExploreNorwegianPorts,
-  explorePortsFromSkjolden,
-} from "@/components/explore-norwegian-ports";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
-import { PlannerInterestGroups } from "@/components/planner-interest-groups";
 import { TourCard } from "@/components/tour-card";
+import {
+  formatScheduleDate,
+  skjoldenScheduleIntegrity,
+} from "@/lib/skjolden-schedules";
 import {
   skjoldenTourCards,
   skjoldenTourListItems,
 } from "@/lib/skjolden-tours";
+import { siteConfig } from "@/lib/site-config";
+import { imageAlts, siteImages } from "@/lib/site-images";
 import { buildPageMetadata } from "@/lib/site-metadata";
 import {
   buildFaqSchema,
   buildItemListSchema,
   buildWebPageSchema,
 } from "@/lib/site-schema";
-import { imageAlts, siteImages } from "@/lib/site-images";
-import { siteConfig } from "@/lib/site-config";
 
 const pageMeta = {
   title:
@@ -38,41 +37,39 @@ export const metadata: Metadata = buildPageMetadata({
   absoluteTitle: true,
 });
 
-const trustBadges = [
-  { label: "Return to ship on time", accent: true },
-  { label: "Inner Sognefjord adventures", accent: false },
-  { label: "Local Skjolden experiences", accent: false },
-] as const;
-
 const homeFaqs = [
   {
-    question: "Is Skjolden worth visiting from a cruise ship?",
+    question: "Is this site for cruise passengers calling at Skjolden?",
     answer:
-      "Yes. Skjolden sits at the innermost point of the Sognefjord with dramatic mountains, waterfalls, llama walks, and RIB adventures. It is one of Norway's most underrated cruise ports with a peaceful atmosphere unlike larger hubs.",
+      "Yes. This is an independent Skjolden cruise-port planning site. It helps you choose between llama walks, RIB fjord adventures, village discovery or bike-and-hike, check published ship calls, and leave a return buffer. Confirm final timings with your cruise line.",
   },
   {
-    question: "How long should I spend in Skjolden?",
+    question: "Should I walk with llamas, take a RIB, or stay in the village?",
     answer:
-      "Under three hours suits llama walks or village discovery. Three to four hours fits fjord RIB adventures. Four to six hours unlocks bike and hike routes. Six or more hours enables the RIB waterfall hike combo or private Sognefjord tours.",
+      "Stay near the village on a short call. Walk with Llamas is the signature Skjolden outing already on this site. Fjord RIB Adventure is the main water option. Bike and hike suits longer, active days. Pick one main outing unless tickets and timing are already confirmed.",
   },
   {
-    question: "Can I walk with llamas in Skjolden?",
+    question: "Can I stack a RIB tour and a long hike because my ship stays all day?",
     answer:
-      "Yes. Walk with Llamas in Skjolden is the signature shore excursion, a guided llama walk through Mørkrid Valley with Skjolden Llamas that is unique among Norway cruise ports.",
+      "Published hours ashore are not enough. Combining a RIB with a serious hike needs confirmed departures and a generous buffer. This site does not invent operator schedules.",
   },
   {
-    question: "What is the best Skjolden shore excursion?",
+    question: "Can I book shore excursions on this site?",
     answer:
-      "Walk with Llamas is the signature choice for first-time visitors. For adventure seekers, Fjord RIB Adventure is the main tour. Active passengers with 6+ hours should consider the RIB and waterfall hike combination.",
-  },
-  {
-    question: "Is Skjolden walkable from the cruise port?",
-    answer:
-      "Yes. Skjolden village is compact and the harbour is within easy walking distance of most cruise piers. Excursion meeting points are typically minutes from where you come ashore.",
+      "This site is for planning and discovery. There is no live booking checkout here. Use the excursion pages and guides to understand options, then arrange tours through operators or your usual booking channel.",
   },
 ] as const;
 
 export default function Home() {
+  const firstLabel = skjoldenScheduleIntegrity.firstDate
+    ? formatScheduleDate(skjoldenScheduleIntegrity.firstDate)
+    : "";
+  const lastLabel = skjoldenScheduleIntegrity.lastDate
+    ? formatScheduleDate(skjoldenScheduleIntegrity.lastDate)
+    : "";
+  const featured = skjoldenTourCards.slice(0, 3);
+  const remaining = skjoldenTourCards.slice(3);
+
   return (
     <>
       <JsonLd
@@ -89,238 +86,285 @@ export default function Home() {
           buildFaqSchema(homeFaqs),
         ]}
       />
-      <main className="min-h-screen bg-white text-slate-900">
+      <main>
         <PageHero
           image={siteImages.hero}
           imageAlt={imageAlts.hero}
-          centered
-          compact
-          overlay="light"
-          className="min-h-[25rem] md:min-h-[31rem] lg:min-h-[34rem]"
+          className="min-h-[28rem] md:min-h-[32rem]"
         >
-          <h1 className="mb-3 text-2xl font-bold text-white sm:mb-5 sm:text-4xl md:text-5xl lg:text-6xl">
-            Skjolden Shore Excursions
-          </h1>
-
-          <p className="mx-auto mb-5 max-w-3xl text-sm text-white/95 sm:mb-7 sm:text-lg md:text-xl">
-            Explore the innermost reaches of the Sognefjord with llama walks,
-            fjord RIB adventures, waterfalls, mountain scenery and unforgettable
-            cruise-friendly shore excursions from Skjolden.
+          <p className="hero-eyebrow mb-3 text-xs font-semibold uppercase tracking-[0.2em]">
+            {siteConfig.name}
           </p>
-
-          <a
-            href="#tours"
-            className="btn-primary px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base"
-          >
-            View Excursions
-          </a>
-
-          <ul className="mx-auto mt-4 flex max-w-2xl flex-wrap items-center justify-center gap-2 sm:mt-6 sm:gap-3">
-            {trustBadges.map((badge) => (
-              <li
-                key={badge.label}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium text-white/95 backdrop-blur-sm sm:px-4 sm:text-sm ${
-                  badge.accent
-                    ? "badge-accent-red"
-                    : "border border-white/25 bg-white/10"
-                }`}
-              >
-                {badge.label}
-              </li>
-            ))}
-          </ul>
+          <h1 className="font-display mb-5 max-w-4xl text-3xl font-semibold leading-tight text-white sm:text-5xl">
+            Your ship is in Skjolden. Llamas, RIB, or a quiet village day?
+          </h1>
+          <p className="max-w-2xl text-base leading-7 text-white/90 sm:text-lg">
+            Innermost Sognefjord character: meadow valleys, Lustrafjord water and
+            a tiny village at the head of Norway&apos;s longest fjord. Choose one
+            main direction, then keep time to get back to the pier.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link
+              href="/excursions"
+              className="btn-primary w-full justify-center sm:w-auto"
+            >
+              Explore Skjolden excursions
+            </Link>
+            <Link
+              href="/ship-schedule"
+              className="btn-secondary w-full justify-center sm:w-auto"
+            >
+              Check your ship schedule
+            </Link>
+          </div>
         </PageHero>
 
-        <section id="tours" className="border-t bg-surface-muted">
-          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-            <h2 className="mb-2 text-3xl font-bold sm:mb-3 sm:text-4xl">
-              Popular Skjolden Tours
+        <section className="border-b border-[var(--border-light)] bg-[var(--surface)] py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">Three Skjolden days</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Llama walk, RIB fjord, or stay local
             </h2>
-            <p className="mb-4 max-w-2xl text-slate-600">
-              Cruise-friendly excursions that depart near Skjolden village and
-              fit typical port-day schedules, from signature llama walks to
-              fjord RIB adventures and private Sognefjord routes.
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              The inventory on this site already splits that way, with bike-and-hike
+              and private options when you want more pace control. No extra
+              decision URL. Use the one-day guide for hours, not as proof that
+              every outing will stack.
             </p>
-            <p className="mb-8 max-w-2xl rounded-lg border border-slate-200 border-l-[3px] border-l-[var(--warm-wood)] bg-white px-4 py-3 text-sm leading-6 text-slate-700">
-              Every excursion featured is selected to fit comfortably within a
-              typical Skjolden cruise port call on the innermost Sognefjord.
-            </p>
+            <div className="mt-10 grid gap-10 md:grid-cols-3">
+              <div>
+                <h3 className="font-display text-xl font-semibold text-slate-900">
+                  Walk with llamas
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Signature Skjolden outing through Mørkrid Valley with Skjolden
+                  Llamas. Distinct from Flåm railway days or Olden glacier calls.
+                </p>
+                <Link
+                  href="/excursions/walk-with-llamas"
+                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
+                >
+                  Walk with Llamas in Skjolden
+                </Link>
+              </div>
+              <div>
+                <h3 className="font-display text-xl font-semibold text-slate-900">
+                  Fjord RIB adventure
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Lustrafjord water time with waterfall stops when adventure is
+                  the priority. Confirm the day&apos;s departures with the
+                  operator.
+                </p>
+                <Link
+                  href="/excursions/fjord-rib-adventure"
+                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
+                >
+                  Fjord RIB Adventure
+                </Link>
+              </div>
+              <div>
+                <h3 className="font-display text-xl font-semibold text-slate-900">
+                  Quiet village day
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Harbour and village discovery when you want innermost-fjord
+                  atmosphere without a long outing. Still one main plan, not a
+                  guarantee that every stop will fit.
+                </p>
+                <Link
+                  href="/excursions/skjolden-village-fjord-discovery"
+                  className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
+                >
+                  Village and fjord discovery
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {skjoldenTourCards.map((tour) => (
-                <TourCard
-                  key={tour.href}
-                  href={tour.href}
-                  image={tour.image}
-                  imageAlt={tour.imageAlt}
-                  title={tour.title}
-                  description={tour.description}
-                  badge={tour.badge}
-                />
+        <section className="border-b border-[var(--border-light)] bg-surface-muted py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">Find your ship</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Check when your ship is in Skjolden
+            </h2>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              {skjoldenScheduleIntegrity.total} published Skjolden calls from{" "}
+              {firstLabel} to {lastLabel}. Arrival and departure times shape what
+              is realistic ashore. Always confirm with your cruise line.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/ship-schedule" className="btn-outline-dark">
+                Open Skjolden ship schedule
+              </Link>
+              <Link
+                href="/one-day-in-skjolden"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
+              >
+                Then plan your hours
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="tours" className="scroll-mt-24 py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">Excursion options</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Experiences already on this site
+            </h2>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              No invented products or prices. Durations are approximate. Keep a
+              return buffer. This site does not sell tickets.
+            </p>
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
+              {featured.map((tour) => (
+                <TourCard key={tour.href} {...tour} />
               ))}
             </div>
+            {remaining.length > 0 ? (
+              <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {remaining.map((tour) => (
+                  <TourCard key={tour.href} {...tour} />
+                ))}
+              </div>
+            ) : null}
             <p className="mt-8">
               <Link
                 href="/excursions"
-                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:border-[var(--norway-blue)] hover:text-[var(--norway-blue)]"
+                className="text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
               >
-                View all Skjolden excursions
+                Compare all Skjolden excursions
               </Link>
             </p>
           </div>
         </section>
 
-        <section id="why-skjolden" className="border-t bg-white">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
-              Why Skjolden Is Ideal for Cruise Shore Excursions
+        <section className="border-y border-[var(--border-light)] bg-[var(--surface)] py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">RIB and hike stacking</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Two big outings is a stretch, not a timetable result
             </h2>
-            <p className="text-base leading-8 text-slate-700 sm:text-lg">
-              Skjolden sits at the head of Lustrafjord, the innermost arm of
-              Norway&apos;s longest and deepest fjord. Cruise passengers arrive
-              at a tiny village surrounded by mountains, then reach llama farms,
-              RIB departure points, and waterfall trails on shore excursions
-              timed for return-to-ship schedules.
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              Existing one-day notes already treat stacking a RIB with a long
+              hike as something that needs a long, confirmed day. Ship duration
+              alone cannot prove it. Confirm each outing separately.
             </p>
-            <ul className="mt-6 list-disc space-y-2 pl-5 text-base leading-8 text-slate-700">
-              <li>
-                Innermost Sognefjord location with dramatic mountain and waterfall
-                scenery
-              </li>
-              <li>
-                Signature llama walks through Mørkrid Valley, unique among Norway
-                cruise ports
-              </li>
-              <li>
-                Fjord RIB adventures on Lustrafjord with Feigumfossen waterfall
-                stops
-              </li>
-              <li>
-                Peaceful atmosphere unlike larger Norway cruise hubs like Bergen
-                or Geiranger
-              </li>
-              <li>
-                Compact village with harbour and excursion meeting points minutes
-                from the pier
-              </li>
-              <li>
-                Match excursions to your actual hours ashore with our Cruise
-                Smart Planner
-              </li>
+          </div>
+        </section>
+
+        <section className="py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">First time in Skjolden</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Useful planning guides
+            </h2>
+            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  href: "/skjolden-port-guide",
+                  title: "Cruise port guide",
+                  text: "Village layout from the pier toward llama, RIB and valley outings.",
+                },
+                {
+                  href: "/one-day-in-skjolden",
+                  title: "One day in Skjolden",
+                  text: "Sample shapes for short, classic and longer port calls.",
+                },
+                {
+                  href: "/is-skjolden-worth-visiting",
+                  title: "Is Skjolden worth visiting?",
+                  text: "Honest context if you are deciding how to spend hours ashore.",
+                },
+                {
+                  href: "/best-time-to-visit-skjolden",
+                  title: "Best time to visit",
+                  text: "Seasonal context for cruise months already published here.",
+                },
+                {
+                  href: "/llama-tours-skjolden",
+                  title: "Llama tours in Skjolden",
+                  text: "Editorial hub for the signature llama-walk experience.",
+                },
+                {
+                  href: "/sognefjord-adventures",
+                  title: "Sognefjord adventures",
+                  text: "RIB and fjord outing context from the innermost Sognefjord.",
+                },
+              ].map((item) => (
+                <li
+                  key={item.href}
+                  className="border-t border-[var(--border-light)] pt-5"
+                >
+                  <h3 className="font-display text-lg font-semibold text-slate-900">
+                    <Link
+                      href={item.href}
+                      className="underline-offset-4 hover:underline"
+                    >
+                      {item.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {item.text}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
-        <section id="meet-the-llamas" className="border-t bg-surface-muted">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
-              <div>
-                <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
-                  Meet the Llamas
-                </h2>
-                <p className="text-base leading-8 text-slate-700">
-                  Skjolden Llamas offers one of the most unexpectedly delightful
-                  shore excursions in Norway. Guided llama walks through
-                  Mørkrid Valley combine gentle riverside paths, mountain views,
-                  and a local farm experience that feels authentically Norwegian
-                  with a touch of the quirky.
-                </p>
-                <p className="mt-4 text-base leading-8 text-slate-700">
-                  Family-friendly and easy-paced, the llama walk is the
-                  experience that sets Skjolden apart from every other port on
-                  your itinerary.
-                </p>
-                <p className="mt-6">
-                  <Link
-                    href="/excursions/walk-with-llamas"
-                    className="btn-primary-on-light"
-                  >
-                    Walk with Llamas in Skjolden
-                  </Link>
-                </p>
-              </div>
-              <div className="overflow-hidden rounded-xl shadow-lg">
-                <img
-                  src={siteImages.llamaTourCard}
-                  alt={imageAlts.llamaTourCard}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="sognefjord-adventures" className="border-t bg-white">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
-              <div className="order-2 overflow-hidden rounded-xl shadow-lg lg:order-1">
-                <img
-                  src={siteImages.lustrafjord}
-                  alt={imageAlts.lustrafjord}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="order-1 lg:order-2">
-                <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
-                  Sognefjord Adventure
-                </h2>
-                <p className="text-base leading-8 text-slate-700">
-                  From Skjolden harbour, RIB boats launch onto Lustrafjord with
-                  turquoise glacial water, steep mountain walls, and waterfalls
-                  including Feigumfossen. Wildlife sightings of porpoises and seals
-                  add to the thrill on many departures.
-                </p>
-                <p className="mt-4 text-base leading-8 text-slate-700">
-                  Whether you choose a standard RIB tour, the active waterfall
-                  hike combination, or a private Sognefjord adventure, Skjolden
-                  delivers fjord excitement without the crowds of larger ports.
-                </p>
-                <p className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="/excursions/fjord-rib-adventure"
-                    className="btn-primary-on-light"
-                  >
-                    Fjord RIB Adventure
-                  </Link>
-                  <Link
-                    href="/sognefjord-adventures"
-                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:border-[var(--norway-blue)] hover:text-[var(--norway-blue)]"
-                  >
-                    Sognefjord Adventures Guide
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="planner" className="border-t bg-surface-muted">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-            <CruisePortDayPlanner />
-            <PlannerInterestGroups />
-          </div>
-        </section>
-
-        <ExploreNorwegianPorts
-          config={explorePortsFromSkjolden}
-          variant="full"
-        />
-
-        <section id="faqs" className="border-t bg-white">
-          <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-            <h2 className="mb-6 text-2xl font-bold text-slate-900 sm:text-3xl">
-              Skjolden cruise passenger FAQs
+        <section
+          id="planner"
+          className="scroll-mt-24 border-y border-[var(--border-light)] bg-surface-muted py-14 sm:py-16"
+        >
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">Port-day planning</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Think in hours, valley light and return buffer
             </h2>
-            <dl className="space-y-6">
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              Use published times as a planning start. This planner helps you
+              think through the day. It does not invent llama-farm or RIB
+              departure hours.
+            </p>
+            <div className="mt-8">
+              <CruisePortDayPlanner />
+            </div>
+          </div>
+        </section>
+
+        <section className="py-14 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <p className="section-eyebrow">Norway beyond Skjolden</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Planning other Norwegian ports?
+            </h2>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              For multi-port itineraries, the national planning site covers the
+              wider Norway cruise picture.
+            </p>
+            <a
+              href={siteConfig.nationalAuthorityUrl}
+              className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--fjord)] underline-offset-4 hover:underline"
+            >
+              Norway Shore Excursions
+            </a>
+          </div>
+        </section>
+
+        <section className="border-y border-[var(--border-light)] bg-[var(--surface)] py-14 sm:py-16">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
+            <p className="section-eyebrow">FAQ</p>
+            <h2 className="font-display mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+              Skjolden cruise questions
+            </h2>
+            <dl className="mt-8 space-y-6">
               {homeFaqs.map((faq) => (
-                <div
-                  key={faq.question}
-                  className="rounded-lg border border-slate-200 border-l-[3px] border-l-[var(--glacier-turquoise)] bg-surface-muted p-5 shadow-sm"
-                >
-                  <dt className="font-semibold text-slate-900">
-                    {faq.question}
-                  </dt>
-                  <dd className="mt-2 leading-7 text-slate-700">
+                <div key={faq.question}>
+                  <dt className="font-semibold text-slate-900">{faq.question}</dt>
+                  <dd className="mt-2 text-sm leading-6 text-slate-600">
                     {faq.answer}
                   </dd>
                 </div>
@@ -329,30 +373,19 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t bg-navy text-white">
-          <div className="mx-auto max-w-3xl px-4 py-14 text-center sm:px-6 sm:py-16">
-            <h2 className="text-2xl font-bold sm:text-3xl">
-              Plan your Skjolden port day with confidence
+        <section className="bg-navy py-14 text-white sm:py-16">
+          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+            <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+              Skjolden planning concierge
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-white/85 sm:text-lg">
-              Browse shore excursions, read the port guide, and use the Cruise
-              Smart Planner, everything built for cruise passengers who need to
-              return on time.
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/80 sm:text-base">
+              {siteConfig.contactEmailVerified
+                ? `Questions about shaping a Skjolden port day? Email ${siteConfig.contactEmail}.`
+                : "A destination email is being prepared. Until then, use the schedule, one-day guide and excursion pages on this site."}
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href={siteConfig.shoreExcursionsPath}
-                className="btn-primary sm:text-base"
-              >
-                Book a Tour
-              </Link>
-              <Link
-                href="/skjolden-port-guide"
-                className="btn-secondary sm:text-base"
-              >
-                Skjolden Port Guide
-              </Link>
-            </div>
+            <Link href="/contact" className="btn-primary mt-6">
+              Contact
+            </Link>
           </div>
         </section>
       </main>

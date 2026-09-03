@@ -26,7 +26,7 @@ export type CruisePortDayPlannerConfig = {
 
 export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
   portName: "Skjolden",
-  heading: "Skjolden Cruise Smart Planner™",
+  heading: "Skjolden port-day planner",
   subtitle: "Plan your shore excursions around your actual time in port.",
   supportingCopy:
     "Built specifically for cruise passengers calling at Skjolden, the innermost village on the Sognefjord.",
@@ -40,7 +40,7 @@ export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
       confidenceScore: 75,
       confidenceLabel: "Short Port Call",
       confidenceMessage:
-        "Ideal for the signature llama walk or a relaxed village and fjord discovery tour with comfortable return margins.",
+        "Best suited to the signature llama walk or a relaxed village and fjord discovery tour with comfortable return margins.",
       excursions: [
         {
           label: "Walk with Llamas in Skjolden",
@@ -65,7 +65,7 @@ export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
       confidenceScore: 85,
       confidenceLabel: "Good Port Call",
       confidenceMessage:
-        "Enough time for a fjord RIB adventure or the signature llama walk with comfortable return margins.",
+        "Enough time for a fjord RIB adventure or the signature llama walk when departures are confirmed.",
       excursions: [
         {
           label: "Fjord RIB Adventure",
@@ -90,7 +90,7 @@ export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
       confidenceScore: 90,
       confidenceLabel: "Strong Port Call",
       confidenceMessage:
-        "Ideal for fjord RIB adventures and the bike and hike active option with mountain and waterfall scenery.",
+        "Good for a fjord RIB adventure or the bike and hike option, still as one main outing with a return buffer.",
       excursions: [
         {
           label: "Fjord RIB Adventure",
@@ -115,9 +115,9 @@ export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
       confidenceScore: 95,
       confidenceLabel: "Excellent Full Day",
       confidenceMessage:
-        "Ideal for the RIB and waterfall hike combination or a private Sognefjord adventure with flexible pacing.",
+        "A long call still does not prove a RIB and a serious hike will both fit unless tickets and pacing are already confirmed.",
       conversionNote:
-        "Most cruise passengers with 6+ hours in Skjolden choose the Fjord RIB Adventure and Waterfall Hike or the Private Sognefjord Adventure.",
+        "With 6+ hours, the RIB and waterfall hike combination or a private Sognefjord day can work when each segment is confirmed separately, not because the timetable looks long.",
       excursions: [
         {
           label: "Fjord RIB Adventure and Waterfall Hike",
@@ -130,7 +130,7 @@ export const skjoldenPortDayPlannerConfig: CruisePortDayPlannerConfig = {
       ],
       dayPlan: [
         "Arrive early and confirm your tour departure",
-        "Morning: RIB boat to Feigumfossen with hiking section",
+        "Morning: RIB boat to Feigumfossen with hiking section if confirmed",
         "Midday: Private fjord viewpoints or village stops on premium tours",
         "Afternoon: Flexible pacing with waterfall and photography time",
         "Keep the final hour free near the cruise port for a calm return",

@@ -85,5 +85,5 @@ export const skjoldenVillageFjordDiscoveryExcursion: ExcursionData = {
   breadcrumbs: skjoldenExcursionBreadcrumbs(title),
   relatedLinks: skjoldenExcursionRelatedLinks,
   bookingHref: "/excursions",
-  bookingLabel: "Book this excursion",
+  bookingLabel: "Explore this excursion",
 };

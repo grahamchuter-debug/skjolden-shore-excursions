@@ -93,9 +93,9 @@ export const imageAlts = {
   lustrafjordMountains:
     "Steep mountain walls along Lustrafjord near Skjolden on Sognefjord shore excursions",
   ribBoat:
-    "Norwegian RIB rescue boat on fjord waters, representative of Skjolden RIB adventure tours",
+    "Norwegian fire-and-rescue RIB on open water, illustrative of RIB-style boats (not a Skjolden product photo)",
   llamaWalk:
-    "Llama with sheep on a Norwegian farm, representative of guided llama walks near Skjolden",
+    "Llama with sheep on a Norwegian farm, illustrative of guided llama walks (not the Skjolden farm)",
   portGuide:
     "Skjolden village and Lustrafjord waterfront, port guide for cruise passengers",
   worthVisiting:
@@ -111,7 +111,7 @@ export const imageAlts = {
   llamaTourCard:
     "Walk with llamas in Skjolden signature shore excursion through Mørkrid Valley",
   ribAdventureTourCard:
-    "Fjord RIB adventure on Lustrafjord with Sognefjord scenery from Skjolden",
+    "Illustrative RIB boat imagery for Skjolden fjord adventure planning (not a local product photo)",
   ribWaterfallHikeTourCard:
     "Fjord RIB adventure combined with Feigumfossen waterfall hike from Skjolden",
   villageDiscoveryTourCard:
